@@ -23,12 +23,5 @@ git clone -b rockchip https://github.com/LongChair/FFmpeg.git
 git clone -b rockchip https://github.com/LongChair/mpv.git
 
 for i in FFmpeg mpv; do
-	(cd $i && patch -p1 < "../$i.diff")
+	(cd $i && patch -p1 < "../$i" && dpkg-buildpackage -us -uc -a arm64);
 done
-
-(cd FFmpeg && dpkg-buildpackage -us -uc -a arm64)
-
-dpkg -i libffmpeg57-rkmpp_3.3.4+20170923_arm64.deb \
-	libffmpeg57-rkmpp-dev_3.3.4+20170923_arm64.deb
-
-(cd mpv && dpkg-buildpackage -us -uc -a arm64)
