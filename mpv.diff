@@ -1,0 +1,531 @@
+diff --git a/debian/changelog b/debian/changelog
+new file mode 100644
+index 000000000..123afd639
+--- /dev/null
++++ b/debian/changelog
+@@ -0,0 +1,5 @@
++mpv-rkmpp (0.26.0+20170925) unstable; urgency=medium
++
++  * Debian build of MPV with Rockchip MPP patches.
++
++ -- Madis Janson <madis@cyber.ee>  Thu, 28 Sep 2017 17:44:51 +0300
+diff --git a/debian/compat b/debian/compat
+new file mode 100644
+index 000000000..f599e28b8
+--- /dev/null
++++ b/debian/compat
+@@ -0,0 +1 @@
++10
+diff --git a/debian/control b/debian/control
+new file mode 100644
+index 000000000..58208316a
+--- /dev/null
++++ b/debian/control
+@@ -0,0 +1,21 @@
++Source: mpv-rkmpp
++Section: video
++Priority: optional
++Maintainer: Madis Janson <madis@cyber.ee>
++Standards-Version: 4.0.0
++Homepage: https://mpv.io/
++Vcs-Git: https://github.com/LongChair/mpv.git
++Vcs-Browser: https://github.com/LongChair/mpv/tree/rockchip-new
++Build-Depends: debhelper (>= 10), dpkg-dev (>= 1.17.4), libffmpeg57-rkmpp-dev,
++ libjpeg62-turbo-dev, libmali-rk-dev, libuchardet-dev, libxinerama-dev,
++ libxrandr-dev, libxss-dev, liblua5.2-dev, python-docutils
++
++Package: mpv-rkmpp
++Architecture: any
++Multi-Arch: foreign
++Depends: ${shlibs:Depends}
++Conflicts: mpv
++Description: MPV video player  with Rockchip MPP support
++ mpv is a movie player based on MPlayer and mplayer2. It supports a wide
++ variety of video file formats, audio and video codecs, and subtitle types.
++ See mpv(1) for info regarding changes between MPlayer, mplayer2 and mpv.
+diff --git a/debian/copyright b/debian/copyright
+new file mode 100644
+index 000000000..66f01be1f
+--- /dev/null
++++ b/debian/copyright
+@@ -0,0 +1,363 @@
++Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
++Upstream-Name: mpv
++Source: https://github.com/mpv-player/mpv/releases
++
++Files: *
++Copyright: 2000-2016, The mplayer, mplayer2 and mpv Developers
++License: LGPL-2.1+
++
++Files: audio/out/ao_sndio.c
++Copyright:
++ 2008, Alexandre Ratchov <alex@caoua.org>
++ 2013, Christian Neukirchen <chneukirchen@gmail.com>
++License: ISC
++
++Files:
++ libmpv/*
++ osdep/semaphore_osx.c
++ osdep/win32/pthread.c
++ player/client.c
++ ta/*
++Copyright: 2000-2016, The mplayer, mplayer2 and mpv Developers
++License: ISC
++
++Files: osdep/android/strnlen.*
++Copyright: 2009, David Schultz <das@FreeBSD.org>
++License: BSD-2-clause
++
++Files: osdep/ar/HIDRemote.*
++Copyright: 2007-2011, IOSPIRIT GmbH
++License: BSD-3-clause
++
++Files: osdep/timer-darwin.c
++Copyright: 2003-2004, Dan Villiom Podlaski Christiansen
++License: Expat
++
++Files: osdep/win32-console-wrapper.c
++Copyright: 2013, Martin Herkt
++License: ISC
++
++Files: TOOLS/vf_dlopen/*
++Copyright: 2012, Rudolf Polzer <divVerent@xonotic.org>
++License: LGPL-2.1+
++
++Files:
++ TOOLS/matroska.py
++ audio/audio.c
++ audio/audio.h
++ audio/decode/ad.h
++ audio/decode/ad_lavc.c
++ audio/decode/ad_spdif.c
++ audio/decode/dec_audio.c
++ audio/decode/dec_audio.h
++ audio/filter/af.c
++ audio/filter/af.h
++ audio/filter/af_channels.c
++ audio/filter/af_drc.c
++ audio/filter/af_equalizer.c
++ audio/filter/af_format.c
++ audio/filter/af_lavcac3enc.c
++ audio/filter/af_lavrresample.c
++ audio/filter/af_pan.c
++ audio/filter/af_scaletempo.c
++ audio/filter/af_volume.c
++ audio/filter/equalizer.h
++ audio/filter/tools.c
++ audio/fmt-conversion.c
++ audio/fmt-conversion.h
++ audio/format.c
++ audio/format.h
++ audio/out/ao.c
++ audio/out/ao.h
++ audio/out/ao_alsa.c
++ audio/out/ao_audiounit.m
++ audio/out/ao_coreaudio.c
++ audio/out/ao_coreaudio_exclusive.c
++ audio/out/ao_coreaudio_properties.c
++ audio/out/ao_coreaudio_properties.h
++ audio/out/ao_coreaudio_utils.c
++ audio/out/ao_coreaudio_utils.h
++ audio/out/ao_jack.c
++ audio/out/ao_lavc.c
++ audio/out/ao_null.c
++ audio/out/ao_openal.c
++ audio/out/ao_oss.c
++ audio/out/ao_pcm.c
++ audio/out/ao_pulse.c
++ audio/out/ao_rsound.c
++ audio/out/internal.h
++ common/av_log.c
++ common/common.h
++ common/encode_lavc.c
++ common/encode_lavc.h
++ common/msg.c
++ common/msg.h
++ demux/demux.c
++ demux/demux.h
++ demux/demux_lavf.c
++ demux/demux_mf.c
++ demux/demux_mkv.c
++ demux/demux_raw.c
++ demux/ebml.c
++ demux/ebml.h
++ demux/matroska.h
++ demux/packet.c
++ demux/packet.h
++ demux/stheader.h
++ input/cmd_list.c
++ input/cmd_list.h
++ input/cmd_parse.c
++ input/cmd_parse.h
++ input/input.c
++ input/input.h
++ input/keycodes.c
++ input/keycodes.h
++ options/m_config.c
++ options/m_config.h
++ options/m_option.c
++ options/m_option.h
++ options/m_property.c
++ options/m_property.h
++ options/options.c
++ options/parse_commandline.c
++ options/parse_commandline.h
++ options/parse_configfile.c
++ options/parse_configfile.h
++ options/path.c
++ options/path.h
++ osdep/macosx_application.h
++ osdep/macosx_application.m
++ osdep/macosx_application_objc.h
++ osdep/macosx_compat.h
++ osdep/macosx_events.h
++ osdep/macosx_events.m
++ osdep/macosx_events_objc.h
++ osdep/macosx_versions.h
++ osdep/mpv.rc
++ osdep/terminal-unix.c
++ osdep/terminal-win.c
++ osdep/terminal.h
++ osdep/timer-linux.c
++ osdep/timer-win2.c
++ osdep/timer.h
++ osdep/w32_keyboard.c
++ osdep/w32_keyboard.h
++ player/audio.c
++ player/command.c
++ player/command.h
++ player/configfiles.c
++ player/core.h
++ player/external_files.h
++ player/loadfile.c
++ player/main.c
++ player/osd.c
++ player/playloop.c
++ player/sub.c
++ player/video.c
++ stream/ai_alsa1x.c
++ stream/ai_oss.c
++ stream/audio_in.c
++ stream/audio_in.h
++ stream/cache.c
++ stream/cookies.c
++ stream/cookies.h
++ stream/dvb_tune.c
++ stream/dvb_tune.h
++ stream/frequencies.c
++ stream/frequencies.h
++ stream/stream.c
++ stream/stream.h
++ stream/stream_bluray.c
++ stream/stream_cdda.c
++ stream/stream_dvb.c
++ stream/stream_dvd.c
++ stream/stream_dvd_common.c
++ stream/stream_dvd_common.h
++ stream/stream_dvdnav.c
++ stream/stream_file.c
++ stream/stream_lavf.c
++ stream/stream_mf.c
++ stream/stream_null.c
++ stream/stream_smb.c
++ stream/stream_tv.c
++ stream/tv.c
++ stream/tv.h
++ stream/tvi_def.h
++ stream/tvi_dummy.c
++ stream/tvi_v4l2.c
++ sub/ass_mp.c
++ sub/ass_mp.h
++ sub/osd.c
++ sub/osd.h
++ sub/sd_ass.c
++ sub/sd_lavc.c
++ video/decode/dec_video.c
++ video/decode/dec_video.h
++ video/decode/vaapi.c
++ video/decode/vd.h
++ video/decode/vd_lavc.c
++ video/filter/vf.c
++ video/filter/vf.h
++ video/filter/vf_crop.c
++ video/filter/vf_dsize.c
++ video/filter/vf_eq.c
++ video/filter/vf_expand.c
++ video/filter/vf_flip.c
++ video/filter/vf_format.c
++ video/filter/vf_gradfun.c
++ video/filter/vf_mirror.c
++ video/filter/vf_noformat.c
++ video/filter/vf_pullup.c
++ video/filter/vf_rotate.c
++ video/filter/vf_scale.c
++ video/filter/vf_stereo3d.c
++ video/filter/vf_sub.c
++ video/filter/vf_yadif.c
++ video/fmt-conversion.c
++ video/fmt-conversion.h
++ video/gpu_memcpy.c
++ video/image_writer.c
++ video/image_writer.h
++ video/img_format.c
++ video/img_format.h
++ video/mp_image.c
++ video/mp_image.h
++ video/out/aspect.c
++ video/out/aspect.h
++ video/out/cocoa/events_view.h
++ video/out/cocoa/events_view.m
++ video/out/cocoa/mpvadapter.h
++ video/out/cocoa/video_view.h
++ video/out/cocoa/video_view.m
++ video/out/cocoa/window.h
++ video/out/cocoa/window.m
++ video/out/cocoa_common.h
++ video/out/cocoa_common.m
++ video/out/opengl/hwdec_vaglx.c
++ video/out/vo.c
++ video/out/vo.h
++ video/out/vo_caca.c
++ video/out/vo_direct3d.c
++ video/out/vo_image.c
++ video/out/vo_lavc.c
++ video/out/vo_null.c
++ video/out/vo_vaapi.c
++ video/out/vo_vdpau.c
++ video/out/vo_x11.c
++ video/out/vo_xv.c
++ video/out/w32_common.c
++ video/out/w32_common.h
++ video/out/win_state.c
++ video/out/x11_common.c
++ video/out/x11_common.h
++ video/vaapi.c
++ video/vaapi.h
++ video/vdpau.c
++ video/vdpau_mixer.c
++Copyright: 2000-2016, The mplayer, mplayer2 and mpv Developers
++License: GPL-2+
++
++Files: debian/*
++Copyright: 2013 Alessandro Ghedini <ghedo@debian.org>
++License: GPL-2+
++
++License: BSD-2-clause
++ Redistribution and use in source and binary forms, with or without
++ modification, are permitted provided that the following conditions
++ are met:
++ 1. Redistributions of source code must retain the above copyright
++    notice, this list of conditions and the following disclaimer.
++ 2. Redistributions in binary form must reproduce the above copyright
++    notice, this list of conditions and the following disclaimer in the
++    documentation and/or other materials provided with the distribution.
++
++License: BSD-3-clause
++ Redistribution and use in source and binary forms, with or without
++ modification, are permitted provided that the following conditions are met:
++     * Redistributions of source code must retain the above copyright
++       notice, this list of conditions and the following disclaimer.
++     * Redistributions in binary form must reproduce the above copyright
++       notice, this list of conditions and the following disclaimer in the
++       documentation and/or other materials provided with the distribution.
++     * Neither the name of the <organization> nor the
++       names of its contributors may be used to endorse or promote products
++       derived from this software without specific prior written permission.
++ .
++ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
++ ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
++ WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
++ DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
++ DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
++ (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
++ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
++ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
++ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
++ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++
++License: Expat
++ Permission is hereby granted, free of charge, to any person obtaining a copy
++ of this software and associated documentation files (the "Software"), to deal
++ in the Software without restriction, including without limitation the rights
++ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
++ copies of the Software, and to permit persons to whom the Software is
++ furnished to do so, subject to the following conditions:
++ .
++ The above copyright notice and this permission notice shall be included in
++ all copies or substantial portions of the Software.
++ .
++ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
++ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
++ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
++ SOFTWARE.
++
++License: GPL-2+
++ This program is free software; you can redistribute it and/or modify
++ it under the terms of the GNU General Public License as published by
++ the Free Software Foundation; either version 2 of the License, or
++ (at your option) any later version.
++ .
++ This program is distributed in the hope that it will be useful,
++ but WITHOUT ANY WARRANTY; without even the implied warranty of
++ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ GNU General Public License for more details.
++ .
++ You should have received a copy of the GNU General Public License along
++ with this program; if not, write to the Free Software Foundation, Inc.,
++ 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
++ .
++ On Debian systems, the complete text of the GNU General
++ Public License version 2 can be found in "/usr/share/common-licenses/GPL-2".
++
++License: ISC
++ Permission to use, copy, modify, and/or distribute this software for any
++ purpose with or without fee is hereby granted, provided that the above
++ copyright notice and this permission notice appear in all copies.
++ .
++ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
++ WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
++ MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
++ ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
++ WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
++ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
++ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
++
++License: LGPL-2.1+
++ This library is free software; you can redistribute it and/or
++ modify it under the terms of the GNU Lesser General Public
++ License as published by the Free Software Foundation; either
++ version 2.1 of the License, or (at your option) any later version.
++ .
++ This library is distributed in the hope that it will be useful,
++ but WITHOUT ANY WARRANTY; without even the implied warranty of
++ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ Lesser General Public License for more details.
++ .
++ You should have received a copy of the GNU Lesser General Public
++ License along with this library; if not, write to the Free Software
++ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
++ .
++ On Debian systems, the complete text of the GNU Lesser General Public
++ License version can be found in "/usr/share/common-licenses/LGPL-2.1".
+diff --git a/debian/rules b/debian/rules
+new file mode 100755
+index 000000000..b7a1a9c79
+--- /dev/null
++++ b/debian/rules
+@@ -0,0 +1,71 @@
++#!/usr/bin/make -f
++
++include /usr/share/dpkg/default.mk
++
++JOBS = -j $(shell nproc)
++DEB_HOST_GNU_TYPE ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
++DESTDIR=$(shell pwd)/debian/mpv-rkmpp
++
++DEBFILEVER=$(shell echo $(DEB_VERSION) | sed s/^[0-9]://)
++BUILD_ARCH_DEB=$(DEBFILEVER)_$(DEB_BUILD_ARCH)
++HOST_ARCH_DEB=$(DEBFILEVER)_$(DEB_HOST_ARCH)
++
++ifneq ($(DEB_BUILD_GNU_TYPE),$(DEB_HOST_GNU_TYPE))
++CC = $(DEB_HOST_GNU_TYPE)-gcc
++CONFIGURE_CROSSBUILD=DEST_OS=linux TARGET=aarch64-linux-gnu
++BUILDINFO_WORKAROUND = cd .. \
++	&& rm -f mpv-rkmpp_$(BUILD_ARCH_DEB).buildinfo \
++		mpv-rkmpp_$(BUILD_ARCH_DEB).deb \
++	&& ln -s mpv-rkmpp_$(HOST_ARCH_DEB).buildinfo \
++		mpv-rkmpp_$(BUILD_ARCH_DEB).buildinfo \
++	&& ln -s mpv-rkmpp_$(HOST_ARCH_DEB).deb \
++		mpv-rkmpp_$(BUILD_ARCH_DEB).deb
++endif
++
++define CONFIGURE
++PKG_CONFIG_PATH=/usr/lib/$(DEB_HOST_GNU_TYPE)/pkgconfig:/usr/lib/pkgconfig \
++$(CONFIGURE_CROSSBUILD) ./waf $(JOBS) configure --prefix=$(DESTDIR)/usr \
++	--libdir=$(DESTDIR)/usr/lib/$(DEB_HOST_GNU_TYPE) \
++	--docdir=$(DESTDIR)/usr/share/doc/mpv-rkmpp --enable-lua --lua=52deb \
++	--disable-javascript --disable-rubberband --disable-libbluray \
++	--disable-lcms2 --disable-vapoursynth --disable-vapoursynth-lazy \
++	--disable-jack --disable-opensl --disable-rsound --disable-coreaudio \
++	--disable-oss --disable-pulse --disable-audiounit --disable-cocoa \
++	--disable-vaapi-hwaccel --disable-vdpau-hwaccel --disable-vaapi \
++	--disable-vdpau --disable-d3d-hwaccel-new --disable-ios-gl \
++	--disable-rpi --disable-caca --disable-android --disable-libv4l2 \
++	--disable-xv --disable-gl-x11 --enable-egl-x11
++endef
++
++clean:
++	rm -f debian/files
++	rm -rf $(DESTDIR)
++	! [ -f waf ] || ./waf distclean
++
++build: build-arch
++
++build-arch:
++	python bootstrap.py
++	$(CONFIGURE)
++	./waf clean
++	./waf $(JOBS)
++
++build-indep:
++
++install:
++	dh_prep
++	./waf install
++
++binary-arch: install
++	dh_compress
++	dh_fixperms
++	dh_strip
++	dh_makeshlibs
++	dh_shlibdeps
++	dh_gencontrol
++	dh_md5sums
++	dh_builddeb
++	$(BUILDINFO_WORKAROUND)
++	rm -rf $(DESTDIR)
++
++binary: binary-arch
+diff --git a/video/out/opengl/hwdec_drmprime_egl.c b/video/out/opengl/hwdec_drmprime_egl.c
+index 4f1faf95a..2e1c43da2 100644
+--- a/video/out/opengl/hwdec_drmprime_egl.c
++++ b/video/out/opengl/hwdec_drmprime_egl.c
+@@ -31,25 +31,35 @@
+ typedef void* GLeglImageOES;
+ #endif
+ 
++#ifdef EGL_DMA_BUF_PLANE3_FD_EXT
+ #define MAX_NUM_PLANES  4
++#else
++#define MAX_NUM_PLANES  3
++#endif
+ 
+ static const EGLint egl_dmabuf_plane_fd_attr[MAX_NUM_PLANES] = {
+         EGL_DMA_BUF_PLANE0_FD_EXT,
+         EGL_DMA_BUF_PLANE1_FD_EXT,
+         EGL_DMA_BUF_PLANE2_FD_EXT,
++#ifdef EGL_DMA_BUF_PLANE3_FD_EXT
+         EGL_DMA_BUF_PLANE3_FD_EXT,
++#endif
+ };
+ static const EGLint egl_dmabuf_plane_offset_attr[MAX_NUM_PLANES] = {
+         EGL_DMA_BUF_PLANE0_OFFSET_EXT,
+         EGL_DMA_BUF_PLANE1_OFFSET_EXT,
+         EGL_DMA_BUF_PLANE2_OFFSET_EXT,
++#ifdef EGL_DMA_BUF_PLANE3_FD_EXT
+         EGL_DMA_BUF_PLANE3_OFFSET_EXT,
++#endif
+ };
+ static const EGLint egl_dmabuf_plane_pitch_attr[MAX_NUM_PLANES] = {
+         EGL_DMA_BUF_PLANE0_PITCH_EXT,
+         EGL_DMA_BUF_PLANE1_PITCH_EXT,
+         EGL_DMA_BUF_PLANE2_PITCH_EXT,
++#ifdef EGL_DMA_BUF_PLANE3_FD_EXT
+         EGL_DMA_BUF_PLANE3_PITCH_EXT,
++#endif
+ };
+ 
+ struct priv {

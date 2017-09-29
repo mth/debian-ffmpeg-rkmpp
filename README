@@ -1,0 +1,15 @@
+Cross-buildable Debian packaging for LongChair rockchip branches of
+FFmpeg and mpv (that is - build .debs on fast x86 machine and try on Rock64).
+
+Current results for me is mpv build that can do hardware decoding of h264 and hevc
+on the Rock64 board, and additionally Firefox seemed to also play videos using
+the hardware decoding support in the FFmpeg library.
+
+Its somewhat tested _only_ with ayufan minimal Debian Stretch arm64 image,
+where Rock64 compatible mali, drm, xserver, xf86-video-armsoc and mpp packages
+were manually installed. The xf86-video-armsoc was built from Ubuntu Artful sources.
+Desktop environment was XFCE without compositor (shouldn't matter).
+
+The packaging is less than ideal and many things are probably broken.
+
+Don't try to use this unless you have good knowledge about Debian Linux.
