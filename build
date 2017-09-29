@@ -23,7 +23,7 @@ git clone -b rockchip https://github.com/LongChair/FFmpeg.git
 git clone -b rockchip https://github.com/LongChair/mpv.git
 
 for i in FFmpeg mpv; do
-	(cd $i && patch -p1 < "../$i")
+	(cd $i && patch -p1 < "../$i.diff")
 done
 
 (cd FFmpeg && dpkg-buildpackage -us -uc -a arm64)
