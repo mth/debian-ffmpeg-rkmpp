@@ -1,0 +1,87 @@
+#!/usr/bin/make -f
+
+include /usr/share/dpkg/default.mk
+
+DEB_HOST_GNU_TYPE ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+PACKAGES=ffmpeg libffmpeg57 libffmpeg-dev libavcodec57 libavdevice57 \
+	 libavformat57 libavutil55 libpostproc54 libavfilter6 libswscale4 \
+	 libswresample2
+DESTDIR=debian/ffmpeg
+DESTDIR_LIB=debian/libffmpeg57
+DESTDIR_DEV=debian/libffmpeg-dev
+
+ifneq ($(DEB_BUILD_GNU_TYPE),$(DEB_HOST_GNU_TYPE))
+CC = $(DEB_HOST_GNU_TYPE)-gcc
+CONFIGURE_CROSSBUILD = --enable-cross-compile --target-os=linux \
+	--arch=$(DEB_HOST_ARCH_CPU) --cross-prefix=$(DEB_HOST_GNU_TYPE)-
+endif
+
+# --enable-libopus --enable-encoder=libopus --disable-decoder=opus \
+
+define CONFIGURE
+PKG_CONFIG_PATH=/usr/lib/$(DEB_HOST_GNU_TYPE)/pkgconfig ./configure \
+	--prefix=$(DESTDIR)/usr --docdir=$(DESTDIR)/usr/share/doc/ffmpeg-rkmpp \
+	--shlibdir=$(DESTDIR_LIB)/usr/lib/$(DEB_HOST_GNU_TYPE) \
+	--libdir=$(DESTDIR_DEV)/usr/lib/$(DEB_HOST_GNU_TYPE) \
+	--incdir=$(DESTDIR_DEV)/usr/include $(CONFIGURE_CROSSBUILD) \
+	--host-cflags=-D__USE_XOPEN --enable-gpl --enable-shared \
+	--enable-nonfree --enable-pic --enable-optimizations --disable-debug \
+	--disable-extra-warnings --disable-ffprobe --disable-ffplay \
+	--disable-ffserver --disable-libpulse --enable-version3 \
+	--enable-openssl --enable-ffmpeg --enable-avdevice --enable-avcodec \
+	--enable-avformat --enable-swscale --enable-postproc --enable-avfilter \
+	--enable-xlib --disable-devices --enable-pthreads --disable-w32threads \
+	--enable-network --disable-gnutls --disable-gray --enable-swscale-alpha \
+	--disable-small --enable-dct --enable-fft --enable-mdct --enable-rdft \
+	--enable-rkmpp --disable-crystalhd --disable-vaapi --disable-vdpau \
+	--disable-dxva2 --enable-runtime-cpudetect --enable-hardcoded-tables \
+	--disable-encoders --enable-encoder=ac3 --enable-encoder=aac \
+	--enable-encoder=wmav2 --enable-encoder=mjpeg --enable-encoder=png \
+	--disable-decoder=mpeg_xvmc --enable-hwaccels --disable-muxers \
+	--enable-muxer=spdif --enable-muxer=adts --enable-muxer=asf \
+	--enable-muxer=ipod --enable-muxer=mpegts --enable-demuxers \
+	--enable-parsers --enable-bsfs  --enable-protocol=http --disable-indevs \
+	--disable-decoder=h264 --disable-decoder=hevc --disable-decoder=vp8 \
+	--disable-outdevs --enable-filters --disable-avisynth --disable-frei0r \
+	--disable-libopencore-amrnb --disable-libopencore-amrwb \
+	--disable-libwavpack --disable-libilbc --disable-libcelt \
+	--disable-libopencv --disable-libdc1394 --disable-libfreetype \
+	--disable-libgsm --disable-libmp3lame --disable-libopenjpeg \
+	--disable-librtmp --disable-libtheora --disable-libvo-amrwbenc \
+	--disable-libvorbis --disable-libvpx --disable-libx264 --disable-libopus \
+	--disable-libxavs --disable-libxvid --disable-symver --enable-libdrm \
+	--enable-zlib --enable-asm --disable-altivec --enable-neon --enable-yasm
+endef
+
+
+clean: 
+	rm -f debian/files
+	rm -rf $(foreach p,$(PACKAGES), debian/$(p))
+	! [ -f ffbuild/config.mak ] || $(MAKE) clean
+
+build: build-arch
+
+build-arch:
+	! [ -f ffbuild/config.mak ] || $(MAKE) distclean
+	$(CONFIGURE)
+	$(MAKE) clean
+	$(MAKE) -j$(shell nproc)
+
+build-indep:
+
+install:
+	dh_prep
+	make install
+
+binary-arch: install
+	dh_compress
+	dh_fixperms
+	dh_strip
+	dh_makeshlibs
+	dh_shlibdeps -Nffmpeg-rkmpp
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+	rm -rf $(foreach p,$(PACKAGES), debian/$(p))
+
+binary: binary-arch

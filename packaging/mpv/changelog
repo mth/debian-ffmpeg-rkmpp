@@ -1,0 +1,5 @@
+mpv-rkmpp (0.26.0+20170925) unstable; urgency=medium
+
+  * Debian build of MPV with Rockchip MPP patches.
+
+ -- Madis Janson <madis@cyber.ee>  Thu, 28 Sep 2017 17:44:51 +0300

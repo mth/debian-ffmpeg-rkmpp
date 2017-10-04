@@ -1,0 +1,43 @@
+#!/usr/bin/make -f
+
+include /usr/share/dpkg/default.mk
+
+DESTDIR=debian/gl4es
+DEB_HOST_GNU_TYPE ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+
+ifneq ($(DEB_BUILD_GNU_TYPE),$(DEB_HOST_GNU_TYPE))
+CC = $(DEB_HOST_GNU_TYPE)-gcc
+CXX = $(DEB_HOST_GNU_TYPE)-g++
+CONFIGURE_CROSSBUILD=-DCMAKE_SYSTEM_NAME=Linux \
+		     -DCMAKE_SYSTEM_PROCESSOR=$(DEB_HOST_ARCH_CPU) \
+		     -DCMAKE_C_COMPILER=$(CC) -DCMAKE_CXX_COMPILER=$(CXX)
+endif
+
+clean:
+	rm -f CMakeCache.txt cmake_install.cmake src/cmake_install.cmake debian/files
+	rm -rf debian/gl4es lib CMakeFiles src/CMakeFiles
+
+build: build-arch
+
+build-arch:
+	cmake $(CONFIGURE_CROSSBUILD)
+	make clean
+	make -j $(shell nproc)
+
+build-indep:
+
+install:
+	dh_prep
+	install -m 644 -D lib/libGL.so.1 -t $(DESTDIR)/usr/lib/$(DEB_HOST_GNU_TYPE)
+	cd  $(DESTDIR)/usr/lib/$(DEB_HOST_GNU_TYPE) && ln -s libGL.so.1 libGL.so
+
+binary: binary-arch
+
+binary-arch: install
+	dh_compress
+	dh_fixperms
+	dh_strip
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb

@@ -1,0 +1,13 @@
+diff --git a/libavcodec/rkmppdec.c b/libavcodec/rkmppdec.c
+index 1e799ec56c..e81d395133 100644
+--- a/libavcodec/rkmppdec.c
++++ b/libavcodec/rkmppdec.c
+@@ -19,7 +19,7 @@
+  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+  */
+ 
+-#include <drm_fourcc.h>
++#include <libdrm/drm_fourcc.h>
+ #include <pthread.h>
+ #include <rockchip/mpp_buffer.h>
+ #include <rockchip/rk_mpi.h>

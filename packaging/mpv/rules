@@ -1,0 +1,61 @@
+#!/usr/bin/make -f
+
+include /usr/share/dpkg/default.mk
+
+JOBS = -j $(shell nproc)
+DEB_HOST_GNU_TYPE ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+DESTDIR=$(shell pwd)/debian/mpv-rkmpp
+
+DEBFILEVER=$(shell echo $(DEB_VERSION) | sed s/^[0-9]://)
+
+ifneq ($(DEB_BUILD_GNU_TYPE),$(DEB_HOST_GNU_TYPE))
+CC = $(DEB_HOST_GNU_TYPE)-gcc
+CONFIGURE_CROSSBUILD=DEST_OS=linux TARGET=aarch64-linux-gnu
+endif
+
+define CONFIGURE
+PKG_CONFIG_PATH=/usr/lib/$(DEB_HOST_GNU_TYPE)/pkgconfig:/usr/lib/pkgconfig \
+$(CONFIGURE_CROSSBUILD) ./waf $(JOBS) configure --prefix=$(DESTDIR)/usr \
+	--libdir=$(DESTDIR)/usr/lib/$(DEB_HOST_GNU_TYPE) \
+	--docdir=$(DESTDIR)/usr/share/doc/mpv-rkmpp --enable-lua --lua=52deb \
+	--disable-javascript --disable-rubberband --disable-libbluray \
+	--disable-lcms2 --disable-vapoursynth --disable-vapoursynth-lazy \
+	--disable-jack --disable-opensl --disable-rsound --disable-coreaudio \
+	--disable-oss --disable-pulse --disable-audiounit --disable-cocoa \
+	--disable-vaapi-hwaccel --disable-vdpau-hwaccel --disable-vaapi \
+	--disable-vdpau --disable-d3d-hwaccel-new --disable-ios-gl \
+	--disable-rpi --disable-caca --disable-android --disable-libv4l2 \
+	--disable-xv --disable-gl-x11
+endef
+
+clean:
+	rm -f debian/files
+	rm -rf $(DESTDIR)
+	! [ -f waf ] || ./waf distclean
+
+build: build-arch
+
+build-arch:
+	python bootstrap.py
+	$(CONFIGURE)
+	./waf clean
+	./waf $(JOBS)
+
+build-indep:
+
+install:
+	dh_prep
+	./waf install
+
+binary-arch: install
+	dh_compress
+	dh_fixperms
+	dh_strip
+	dh_makeshlibs
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+	rm -rf $(DESTDIR)
+
+binary: binary-arch

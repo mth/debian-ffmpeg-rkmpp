@@ -1,0 +1,104 @@
+Source: ffmpeg
+Section: video
+Priority: optional
+Maintainer: Madis Janson <madis@cyber.ee>
+Standards-Version: 4.0.0
+Homepage: http://ffmpeg.org/
+Vcs-Git: https://github.com/LongChair/FFmpeg.git
+Vcs-Browser: https://github.com/LongChair/FFmpeg/tree/rockchip-new
+# it Build-Depends on yasm, but yasm don't have Multi-Arch: foreign set
+# libopus-dev,
+Build-Depends: debhelper (>= 10), dpkg-dev (>= 1.17.4), libass-dev,
+ libasound2-dev, libssl1.0-dev, librockchip-mpp-dev, libdrm-dev,
+ libx11-dev, libxcb-shape0-dev, libxcb-shm0-dev, libxcb-xfixes0-dev,
+ pkg-config, texinfo, zlib1g-dev
+
+Package: ffmpeg
+Architecture: any
+Multi-Arch: foreign
+Depends: libffmpeg57 (= ${binary:Version})
+Provides: ffmpeg
+Description: FFmpeg with Rockchip MPP support
+
+Package: libffmpeg57
+Architecture: any
+Section: libs
+Multi-Arch: same
+Depends: libasound2, libass5, librockchip-mpp1, libdrm-rockchip1,
+ libssl1.0.2, libxcb-shape0, libxcb-shm0, libxcb-xfixes0, libx11-6, zlib1g
+Conflicts: libavcodec57 (<< ${binary:Version}), libavdevice57 (<< ${binary:Version}),
+ libavformat57 (<< ${binary:Version}), libavutil55 (<< ${binary:Version}),
+ libpostproc54 (<< ${binary:Version}), libavfilter6 (<< ${binary:Version}),
+ libswscale4 (<< ${binary:Version}), libswresample2 (<< ${binary:Version})
+Description: FFmpeg library with Rockchip MPP support - runtime files
+ FFmpeg is the leading multimedia framework, able to decode, encode, transcode,
+ mux, demux, stream, filter and play pretty much anything that humans and
+ machines have created. It supports the most obscure ancient formats up to the
+ cutting edge.
+
+Package: libffmpeg-dev
+Architecture: any
+Section: libdevel
+multi-Arch: same
+Depends: libffmpeg57 (= ${binary:Version})
+Provides: libavcodec-dev, libavdevice-dev, libavfilter-dev, libavformat-dev,
+ libavutil-dev, libpostproc-dev, libswresample-dev, libswscale-dev
+Conflicts: libavcodec-dev, libavdevice-dev, libavfilter-dev, libavformat-dev,
+ libavutil-dev, libpostproc-dev, libswresample-dev, libswscale-dev
+Description: FFmpeg library with functions for simplifying programming - development files
+
+Package: libavcodec57
+Architecture: any
+Section: libs
+Multi-Arch: same
+Depends: libffmpeg57 (>= ${binary:Version})
+Description: Dummy FFmpeg libavdevice package
+
+Package: libavdevice57
+Architecture: any
+Section: libs
+Multi-Arch: same
+Depends: libffmpeg57 (>= ${binary:Version})
+Description: Dummy FFmpeg libavdevice package
+
+Package: libavformat57
+Architecture: any
+Section: libs
+Multi-Arch: same
+Depends: libffmpeg57 (>= ${binary:Version})
+Description: Dummy FFmpeg libavformat package
+
+Package: libavutil55
+Architecture: any
+Section: libs
+Multi-Arch: same
+Depends: libffmpeg57 (>= ${binary:Version})
+Description: Dummy FFmpeg libavutil package
+
+Package: libpostproc54
+Architecture: any
+Section: libs
+Multi-Arch: same
+Depends: libffmpeg57 (>= ${binary:Version})
+Description: Dummy FFmpeg libpostproc package
+
+Package: libavfilter6
+Architecture: any
+Section: libs
+Multi-Arch: same
+Depends: libffmpeg57 (>= ${binary:Version})
+Description: Dummy FFmpeg libavfilter package
+
+Package: libswscale4
+Architecture: any
+Section: libs
+Multi-Arch: same
+Depends: libffmpeg57 (>= ${binary:Version})
+Description: Dummy FFmpeg libswscale package
+
+Package: libswresample2
+Architecture: any
+Section: libs
+Multi-Arch: same
+Depends: libffmpeg57 (>= ${binary:Version})
+Description: Dummy FFmpeg libswresample package

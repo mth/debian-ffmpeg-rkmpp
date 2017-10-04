@@ -7,21 +7,27 @@ ARCH=arm64
 dpkg --add-architecture $ARCH
 
 apt-get update
-apt-get install binutils-multiarch-dev build-essential debhelper dpkg-dev \
+apt-get install binutils-multiarch-dev \
 	g++-aarch64-linux-gnu gawk gcc-aarch64-linux-gnu git gzip locales make \
 	multiarch-support pkg-config python python-docutils yasm libc6-dev \
-	libc6-dev-$ARCH-cross libc6-dev:$ARCH libasound2-dev:$ARCH \
-	libass-dev:$ARCH libdrm-dev:$ARCH libdrm-rockchip1:$ARCH libdrm2:$ARCH \
-	libjpeg62-turbo-dev:$ARCH liblua5.2-dev:$ARCH libmali-rk-dev:$ARCH \
-	libmali-rk-utgard-2th-r7p0:$ARCH librockchip-mpp-dev:$ARCH \
-	libxss-dev:$ARCH librockchip-mpp1:$ARCH libssl1.0-dev:$ARCH \
-	libuchardet-dev:$ARCH libx11-dev:$ARCH libxcb-shape0-dev:$ARCH \
-	libxcb-shm0-dev:$ARCH libxcb-xfixes0-dev:$ARCH libxinerama-dev:$ARCH \
-	libxrandr-dev:$ARCH
+	libc6-dev-$ARCH-cross libc6-dev:$ARCH
 
+# git clone https://github.com/ptitSeb/gl4es.git
 git clone -b rockchip https://github.com/LongChair/FFmpeg.git 
 git clone -b rockchip https://github.com/LongChair/mpv.git
 
-for i in FFmpeg mpv; do
-	(cd $i && patch -p1 < "../$i" && dpkg-buildpackage -us -uc -a arm64);
-done
+prepare() {
+	cp -a packaging/$1 $1/debian
+	cd $1 && patch -p1 < "../patches/$1"
+	apt-get build-dep -y $1
+}
+
+prepare FFmpeg
+prepare mpv
+
+build() {
+	cd $1 && dpkg-buildpackage -b -us -uc -a arm64
+}
+
+build FFmpeg
+build mpv

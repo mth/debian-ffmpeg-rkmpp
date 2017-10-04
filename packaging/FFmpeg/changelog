@@ -1,0 +1,5 @@
+ffmpeg (7:3.3.4+rkmpp.20170923) unstable; urgency=medium
+
+  * Debian build of FFmpeg with Rockchip MPP patches.
+
+ -- Madis Janson <madis@cyber.ee>  Tue, 26 Sep 2017 16:44:51 +0300

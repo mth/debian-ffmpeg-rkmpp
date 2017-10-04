@@ -1,0 +1,40 @@
+diff --git a/video/out/opengl/hwdec_drmprime_egl.c b/video/out/opengl/hwdec_drmprime_egl.c
+index 4f1faf95a..2e1c43da2 100644
+--- a/video/out/opengl/hwdec_drmprime_egl.c
++++ b/video/out/opengl/hwdec_drmprime_egl.c
+@@ -31,25 +31,35 @@
+ typedef void* GLeglImageOES;
+ #endif
+ 
++#ifdef EGL_DMA_BUF_PLANE3_FD_EXT
+ #define MAX_NUM_PLANES  4
++#else
++#define MAX_NUM_PLANES  3
++#endif
+ 
+ static const EGLint egl_dmabuf_plane_fd_attr[MAX_NUM_PLANES] = {
+         EGL_DMA_BUF_PLANE0_FD_EXT,
+         EGL_DMA_BUF_PLANE1_FD_EXT,
+         EGL_DMA_BUF_PLANE2_FD_EXT,
++#ifdef EGL_DMA_BUF_PLANE3_FD_EXT
+         EGL_DMA_BUF_PLANE3_FD_EXT,
++#endif
+ };
+ static const EGLint egl_dmabuf_plane_offset_attr[MAX_NUM_PLANES] = {
+         EGL_DMA_BUF_PLANE0_OFFSET_EXT,
+         EGL_DMA_BUF_PLANE1_OFFSET_EXT,
+         EGL_DMA_BUF_PLANE2_OFFSET_EXT,
++#ifdef EGL_DMA_BUF_PLANE3_FD_EXT
+         EGL_DMA_BUF_PLANE3_OFFSET_EXT,
++#endif
+ };
+ static const EGLint egl_dmabuf_plane_pitch_attr[MAX_NUM_PLANES] = {
+         EGL_DMA_BUF_PLANE0_PITCH_EXT,
+         EGL_DMA_BUF_PLANE1_PITCH_EXT,
+         EGL_DMA_BUF_PLANE2_PITCH_EXT,
++#ifdef EGL_DMA_BUF_PLANE3_FD_EXT
+         EGL_DMA_BUF_PLANE3_PITCH_EXT,
++#endif
+ };
+ 
+ struct priv {

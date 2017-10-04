@@ -1,0 +1,22 @@
+Source: mpv-rkmpp
+Section: video
+Priority: optional
+Maintainer: Madis Janson <madis@cyber.ee>
+Standards-Version: 4.0.0
+Homepage: https://mpv.io/
+Vcs-Git: https://github.com/LongChair/mpv.git
+Vcs-Browser: https://github.com/LongChair/mpv/tree/rockchip-new
+Build-Depends: debhelper (>= 10), dpkg-dev (>= 1.17.4), libffmpeg-dev,
+ libjpeg62-turbo-dev, libmali-rk-dev, libuchardet-dev, libxinerama-dev,
+ libxrandr-dev, libxss-dev, liblua5.2-dev, python-docutils
+
+Package: mpv-rkmpp
+Architecture: any
+Multi-Arch: foreign
+Depends: ${shlibs:Depends}
+Recommends: libmali-rk, libdrm-rockchip1
+Conflicts: mpv
+Description: MPV video player  with Rockchip MPP support
+ mpv is a movie player based on MPlayer and mplayer2. It supports a wide
+ variety of video file formats, audio and video codecs, and subtitle types.
+ See mpv(1) for info regarding changes between MPlayer, mplayer2 and mpv.
