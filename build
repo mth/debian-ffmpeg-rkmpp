@@ -39,4 +39,7 @@ build() {
 }
 
 build FFmpeg
+dpkg -i libffmpeg57_3.3.4+rkmpp.20170923_$ARCH.deb \
+     	libffmpeg-dev_3.3.4+rkmpp.20170923_$ARCH.deb
+
 build mpv
