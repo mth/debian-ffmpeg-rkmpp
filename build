@@ -14,12 +14,12 @@ apt-get install binutils-multiarch-dev \
 
 prepare() {
 	if [ -d $1 ]; then
-		cd $1 && git reset --hard && git pull
+		(cd $1 && git reset --hard && git pull)
 	else
 		git clone -b "$3" "$2" $1
 	fi
 	cp -a packaging/$1 $1/debian
-	cd $1 && patch -p1 < "../patches/$1.diff"
+	(cd $1 && patch -p1 < "../patches/$1.diff")
 	apt-get build-dep -y $1
 }
 
@@ -28,7 +28,7 @@ prepare FFmpeg https://github.com/LongChair/FFmpeg.git rockchip
 prepare mpv https://github.com/LongChair/mpv.git rockchip
 
 build() {
-	cd $1 && dpkg-buildpackage -b -us -uc -a arm64
+	(cd $1 && dpkg-buildpackage -b -us -uc -a arm64)
 }
 
 build FFmpeg
