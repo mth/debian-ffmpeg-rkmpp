@@ -12,7 +12,8 @@ where Rock64 compatible mali, drm, xserver, xf86-video-armsoc and mpp packages
 were manually installed. The xf86-video-armsoc was built from Ubuntu Artful sources.
 You should probably not use compositing window manager, and use mpv --hwdec=yes
 to actually enable the accelerated playback. The drm output is broken,
-but x11-egl (named -vo opengl for some reason) works fine at fullscreen.
+but x11-egl (named -vo opengl for some reason) works fine at fullscreen
+(tested at 1920x1080 resolution with various h264 and h265 videos).
 
 The packaging is less than ideal and many things are probably broken.
 
