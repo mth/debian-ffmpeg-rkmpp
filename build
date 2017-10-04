@@ -12,18 +12,20 @@ apt-get install binutils-multiarch-dev \
 	multiarch-support pkg-config python python-docutils yasm libc6-dev \
 	libc6-dev-$ARCH-cross libc6-dev:$ARCH
 
-# git clone https://github.com/ptitSeb/gl4es.git
-git clone -b rockchip https://github.com/LongChair/FFmpeg.git 
-git clone -b rockchip https://github.com/LongChair/mpv.git
-
 prepare() {
+	if [ -d $1 ]; then
+		cd $1 && git reset --hard && git pull
+	else
+		git clone -b "$3" "$2" $1
+	fi
 	cp -a packaging/$1 $1/debian
-	cd $1 && patch -p1 < "../patches/$1"
+	cd $1 && patch -p1 < "../patches/$1.diff"
 	apt-get build-dep -y $1
 }
 
-prepare FFmpeg
-prepare mpv
+# git clone https://github.com/ptitSeb/gl4es.git
+prepare FFmpeg https://github.com/LongChair/FFmpeg.git rockchip
+prepare mpv https://github.com/LongChair/mpv.git rockchip
 
 build() {
 	cd $1 && dpkg-buildpackage -b -us -uc -a arm64
