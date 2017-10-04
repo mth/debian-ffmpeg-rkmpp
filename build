@@ -7,10 +7,17 @@ ARCH=arm64
 dpkg --add-architecture $ARCH
 
 apt-get update
-apt-get install binutils-multiarch-dev \
+apt-get install binutils-multiarch-dev build-essential debhelper dpkg-dev \
 	g++-aarch64-linux-gnu gawk gcc-aarch64-linux-gnu git gzip locales make \
 	multiarch-support pkg-config python python-docutils yasm libc6-dev \
-	libc6-dev-$ARCH-cross libc6-dev:$ARCH
+	libc6-dev-$ARCH-cross libc6-dev:$ARCH libasound2-dev:$ARCH \
+	libass-dev:$ARCH libdrm-dev:$ARCH libdrm-rockchip1:$ARCH libdrm2:$ARCH \
+	libjpeg62-turbo-dev:$ARCH liblua5.2-dev:$ARCH libmali-rk-dev:$ARCH \
+	libmali-rk-utgard-2th-r7p0:$ARCH librockchip-mpp-dev:$ARCH \
+	libxss-dev:$ARCH librockchip-mpp1:$ARCH libssl1.0-dev:$ARCH \
+	libuchardet-dev:$ARCH libx11-dev:$ARCH libxcb-shape0-dev:$ARCH \
+	libxcb-shm0-dev:$ARCH libxcb-xfixes0-dev:$ARCH libxinerama-dev:$ARCH \
+	libxrandr-dev:$ARCH
 
 prepare() {
 	if [ -d $1 ]; then
@@ -20,7 +27,7 @@ prepare() {
 	fi
 	cp -a packaging/$1 $1/debian
 	(cd $1 && patch -p1 < "../patches/$1.diff")
-	apt-get build-dep -y $1
+	#apt-get build-dep --host-architecture $ARCH -y "`pwd`/$1"
 }
 
 # git clone https://github.com/ptitSeb/gl4es.git
@@ -28,7 +35,7 @@ prepare FFmpeg https://github.com/LongChair/FFmpeg.git rockchip
 prepare mpv https://github.com/LongChair/mpv.git rockchip
 
 build() {
-	(cd $1 && dpkg-buildpackage -b -us -uc -a arm64)
+	(cd $1 && dpkg-buildpackage -b -us -uc -a $ARCH)
 }
 
 build FFmpeg
